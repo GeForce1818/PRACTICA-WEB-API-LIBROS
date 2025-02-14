@@ -1,0 +1,6 @@
+@PRACTICA_WEB_API_LIBROS_HostAddress = http://localhost:5172
+
+GET {{PRACTICA_WEB_API_LIBROS_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
