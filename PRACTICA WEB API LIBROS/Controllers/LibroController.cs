@@ -76,7 +76,23 @@ namespace PRACTICA_WEB_API_LIBROS.Controllers
             }
         }*/
 
+        [HttpDelete]
+        [Route("Eliminar/{id}")]
+        public IActionResult EliminarAutor(int id)
+        {
+            Libro? Libro = (from e in _BibliotecaContexto.Libro where e.Id == id select e).FirstOrDefault();
 
+            if (Libro == null)
+            {
+                return NotFound();
+            }
+
+            _BibliotecaContexto.Libro.Attach(Libro);
+            _BibliotecaContexto.Libro.Remove(Libro);
+            _BibliotecaContexto.SaveChanges();
+            return Ok(Libro);
+
+        }
 
     }
 }
