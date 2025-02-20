@@ -53,6 +53,22 @@ namespace PRACTICA_WEB_API_LIBROS.Controllers
             return Ok(Autor);
         }
 
-        
+        /* ESTO SE DEBE EDITAR
+        [HttpPost]
+        [Route("Add")]
+        public IActionResult GuardarAutor([FromBody] Autor Autor)
+        {
+            try
+            {
+                _BibliotecaContexto.Autor.Add(Autor);
+                _BibliotecaContexto.SaveChanges();
+                return Ok(Autor);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }*/
+
     }
 }
