@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer;
 
-}namespace PRACTICA_WEB_API_LIBROS.Models
+namespace PRACTICA_WEB_API_LIBROS.Models
 {
     public class BibliotecaContext : DbContext
 
@@ -10,7 +10,9 @@ using Microsoft.EntityFrameworkCore.SqlServer;
         
         {
         
-        }  
+        }
+        public DbSet<Autor> Autor { get; set; }
+        public DbSet<Libro> Libro { get; set; }
 
     }
 }
