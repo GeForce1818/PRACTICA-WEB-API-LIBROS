@@ -1,15 +1,20 @@
-﻿namespace PRACTICA_WEB_API_LIBROS.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace PRACTICA_WEB_API_LIBROS.Models
 {
     public class Libro
     {
-        public int id_libro { get; set; }
-        public string titulo { get; set; }
-        public int año_publicacion { get; set; }
-        public int autor_id { get; set; }
-        public int categoria_id { get; set; }
-        public string resumen { get; set; }
+        [Key] // Esto indica que es la clave primaria
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        public string Titulo { get; set; }
+        public int AñoPublicación { get; set; }
+        public int AutorId { get; set; }
+        public int CategoriaId { get; set; }
+        public string Resumen { get; set; }
 
-
-
+        // Relación con Autor
+        public Autor Autor { get; set; }
     }
 }

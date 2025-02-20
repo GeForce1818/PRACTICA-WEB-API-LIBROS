@@ -32,5 +32,21 @@ namespace PRACTICA_WEB_API_LIBROS.Controllers
 
             return Ok(listadoLibro);
         }
+
+        [HttpGet]
+        [Route("GetById/{id}")]
+        public IActionResult Get(int id)
+        {
+            Libro? Libro = (from e in _BibliotecaContexto.Libro where e.Id == id select e).FirstOrDefault();
+
+            if (Libro == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(Libro);
+        }
+
+
     }
 }

@@ -30,5 +30,29 @@ namespace PRACTICA_WEB_API_LIBROS.Controllers
 
             return Ok(listadoAutor);
         }
+
+        [HttpGet]
+        [Route("GetById/{id}")]
+        public IActionResult Get(int id)
+        {
+            Autor? Autor = (from e in _BibliotecaContexto.Autor where e.Id == id select new Autor
+            {
+                Id = e.Id,
+                Nombre = e.Nombre,
+                Nacionalidad = e.Nacionalidad,
+                Libro = _BibliotecaContexto.Libro
+                            .Where(l => l.AutorId == e.Id)
+                            .ToList()
+            }).FirstOrDefault();
+
+            if (Autor == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(Autor);
+        }
+
+        
     }
 }
