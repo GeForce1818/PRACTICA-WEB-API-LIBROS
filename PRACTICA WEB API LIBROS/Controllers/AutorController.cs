@@ -32,35 +32,45 @@ namespace PRACTICA_WEB_API_LIBROS.Controllers
         }
 
         [HttpGet]
-        [Route("GetById/{id}")]
-        public IActionResult Get(int id)
+        [Route("GetByIdAutor/{id}")]
+        public IActionResult GetAutor(int id)
         {
-            Autor? Autor = (from e in _BibliotecaContexto.Autor where e.Id == id select new Autor
-            {
-                Id = e.Id,
-                Nombre = e.Nombre,
-                Nacionalidad = e.Nacionalidad,
-                Libro = _BibliotecaContexto.Libro
-                            .Where(l => l.AutorId == e.Id)
-                            .ToList()
-            }).FirstOrDefault();
+            var autorConLibros = (from a in _BibliotecaContexto.Autor
+                                  where a.Id == id
+                                  select new
+                                  {
+                                      a.Id,
+                                      a.Nombre,
+                                      a.Nacionalidad,
+                                      Libros = (from l in _BibliotecaContexto.Libro
+                                                where l.AutorId == a.Id
+                                                select new
+                                                {
+                                                    l.AutorId,
+                                                    l.Titulo,
+                                                    l.AñoPublicación,
+                                                    l.Resumen
+                                                }).ToList()
+                                  }).FirstOrDefault();
 
-            if (Autor == null)
+            if (autorConLibros == null)
             {
                 return NotFound();
             }
 
-            return Ok(Autor);
+            return Ok(autorConLibros);
         }
 
-        /* ESTO SE DEBE EDITAR
+
+
         [HttpPost]
-        [Route("Add")]
+        [Route("AddAutor")]
         public IActionResult GuardarAutor([FromBody] Autor Autor)
         {
+
             try
             {
-                _BibliotecaContexto.Autor.Add(Autor);
+                _BibliotecaContexto.Add(Autor);
                 _BibliotecaContexto.SaveChanges();
                 return Ok(Autor);
             }
@@ -68,7 +78,9 @@ namespace PRACTICA_WEB_API_LIBROS.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }*/
+
+        }
+
 
     }
 }

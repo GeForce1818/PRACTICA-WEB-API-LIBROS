@@ -34,47 +34,48 @@ namespace PRACTICA_WEB_API_LIBROS.Controllers
         }
 
         [HttpGet]
-        [Route("GetById/{id}")]
-        public IActionResult Get(int id)
+        [Route("GetAllLibros")]
+        public IActionResult GetLibros()
         {
-            Libro? Libro = (from e in _BibliotecaContexto.Libro
-                            where e.Id == id
-                            select new Libro
-                            {
-                                Id = e.Id,
-                                Titulo = e.Titulo,
-                                AñoPublicación = e.AñoPublicación,
-                                AutorId = e.AutorId,
-                                CategoriaId = e.CategoriaId,
-                                Resumen = e.Resumen,
-                                Autor = _BibliotecaContexto.Autor
-                                .FirstOrDefault(a => a.Id == e.AutorId) // Obtener el autor directamente
-                            }).FirstOrDefault();
+            var listadoLibro = (from e in _BibliotecaContexto.Libro
+                                join t in _BibliotecaContexto.Autor
+                                          on e.AutorId equals t.Id
+                                select new
+                                {
+                                    e.Id,
+                                    e.Titulo,
+                                    e.AñoPublicación,
+                                    e.AutorId,
+                                    Nombre_Autor = t.Nombre,
+                                    e.CategoriaId,
+                                    e.Resumen,
+                                }).OrderBy(resultado => resultado.Id)
+                                    .ThenBy(resultado => resultado.AutorId).ToList();
 
-            if (Libro == null)
+            if (listadoLibro.Count == 0)
             {
                 return NotFound();
             }
 
-            return Ok(Libro);
+            return Ok(listadoLibro);
         }
 
-        /* ESTO SE DEBE EDITAR
+
         [HttpPost]
         [Route("Add")]
-        public IActionResult GuardarLibro([FromBody] Libro Libro)
+        public ActionResult GuardarLibro([FromBody] Libro libro)
         {
             try
             {
-                _BibliotecaContexto.Libro.Add(Libro);
+                _BibliotecaContexto.Libro.Add(libro);
                 _BibliotecaContexto.SaveChanges();
-                return Ok(Libro);
+                return Ok(libro);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-        }*/
+        }
 
 
 
