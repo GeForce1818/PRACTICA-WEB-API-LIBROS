@@ -15,5 +15,20 @@ namespace PRACTICA_WEB_API_LIBROS.Controllers
         {
             _BibliotecaContexto = BibliotecaContexto;
         }
+
+        [HttpGet]
+        [Route("GetAll")]
+
+        public IActionResult Get()
+        {
+            List<Autor> listadoAutor = (from e in _BibliotecaContexto.Autor select e).ToList();
+
+            if (listadoAutor.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(listadoAutor);
+        }
     }
 }
