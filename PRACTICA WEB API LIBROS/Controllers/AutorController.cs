@@ -35,17 +35,15 @@ namespace PRACTICA_WEB_API_LIBROS.Controllers
         [Route("GetById/{id}")]
         public IActionResult Get(int id)
         {
-            Autor? Autor = (from e in _BibliotecaContexto.Autor
-                            where e.Id == id
-                            select new Autor
-                            {
-                                Id = e.Id,
-                                Nombre = e.Nombre,
-                                Nacionalidad = e.Nacionalidad,
-                                Libro = _BibliotecaContexto.Libro
+            Autor? Autor = (from e in _BibliotecaContexto.Autor where e.Id == id select new Autor
+            {
+                Id = e.Id,
+                Nombre = e.Nombre,
+                Nacionalidad = e.Nacionalidad,
+                Libro = _BibliotecaContexto.Libro
                             .Where(l => l.AutorId == e.Id)
                             .ToList()
-                            }).FirstOrDefault();
+            }).FirstOrDefault();
 
             if (Autor == null)
             {
@@ -72,22 +70,5 @@ namespace PRACTICA_WEB_API_LIBROS.Controllers
             }
         }*/
 
-        [HttpDelete]
-        [Route("Eliminar/{id}")]
-        public IActionResult EliminarAutor(int id)
-        {
-            Autor? Autor = (from e in _BibliotecaContexto.Autor where e.Id == id select e).FirstOrDefault();
-
-            if (Autor == null)
-            {
-                return NotFound();
-            }
-
-            _BibliotecaContexto.Autor.Attach(Autor);
-            _BibliotecaContexto.Autor.Remove(Autor);
-            _BibliotecaContexto.SaveChanges();
-            return Ok(Autor);
-
-        }
     }
 }
